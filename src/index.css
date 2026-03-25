@@ -1,0 +1,168 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 207 10% 30%;
+    --card: 0 0% 100%;
+    --card-foreground: 207 10% 30%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 207 10% 30%;
+
+    --primary: 207 100% 31%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 26 84% 54%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 207 10% 30%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 207 10% 85%;
+    --input: 207 10% 85%;
+    --ring: 207 100% 31%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 207 100% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 26 84% 60%;
+    --secondary-foreground: 207 10% 10%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 207 100% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  .prose h1 {
+    @apply text-3xl font-extrabold text-brand-blue mb-4 leading-tight;
+  }
+
+  .prose h2 {
+    @apply text-2xl font-bold text-brand-blue mt-8 mb-4;
+  }
+
+  /* Adjustments for better mobile ergonomics */
+  .container {
+    @apply px-4 sm:px-6 lg:px-8;
+    /* Ensure consistent padding */
+  }
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 6px 24px 0 rgba(0, 0, 0, 0.2);
+}
+
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary-custom {
+  @apply bg-primary text-white hover:bg-opacity-90;
+}
+
+.btn-secondary-custom {
+  @apply bg-secondary text-white hover:bg-opacity-90;
+}
+
+/* =========================================================
+   LivingRoom – micro-animation barre latérale ProjectCard
+   ====================================================== */
+
+/* Shimmer/pulse très léger pour la barre verticale */
+@keyframes lr-side-shimmer {
+  0% {
+    transform: translateY(-8%);
+    opacity: 0.55;
+  }
+
+  50% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(8%);
+    opacity: 0.55;
+  }
+}
+
+/* Animation uniquement sur desktop, via .group:hover */
+@media (min-width: 640px) {
+  .group:hover .lr-side-gradient {
+    animation: lr-side-shimmer 1.4s ease-in-out infinite;
+  }
+}
+
+/* =========================================================
+   LivingRoom – animation d'apparition des ProjectCard
+   ====================================================== */
+
+@keyframes lr-card-fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* état initial (avant d'entrer dans le viewport) */
+.lr-card-enter {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+/* quand la carte devient visible */
+.lr-card-enter-visible {
+  opacity: 1;
+  transform: translateY(0);
+  animation: lr-card-fade-in-up 0.45s ease-out forwards;
+}

@@ -1,0 +1,18 @@
+{
+  "siteUrl": "https://livingroom.immo",
+  "posts": [
+    {
+      "title": "Miser sur le matching intelligent en 2025",
+      "slug": "miser-sur-matching-intelligent-2025",
+      "date": "2025-10-15",
+      "updated": "2025-11-08",
+      "author": "LivingRoom",
+      "excerpt": "Comment capter des mandats sans démarchage agressif grâce au matching.",
+      "tags": ["immobilier", "prospection", "matching"],
+      "cover": "/images/blog/miser-sur-matching-intelligent-2025/hero.jpg",
+      "ogImage": "/og/blog/miser-sur-matching-intelligent-2025.png",
+      "readingTime": 6,
+      "markdownPath": "/blog/posts/miser-sur-matching-intelligent-2025.md"
+    }
+  ]
+}

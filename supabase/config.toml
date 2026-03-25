@@ -1,0 +1,12 @@
+[auth]
+enable_signup = true
+double_confirm_email = true
+enable_confirmations = true
+
+[auth.email.template.secure_email_change]
+subject = "Confirmez votre nouvelle adresse e-mail"
+content = """
+<h2>Confirmez votre nouvelle adresse e-mail</h2>
+<p>Suivez ce lien pour confirmer le changement de votre adresse e-mail de {{ .Email }} à {{ .NewEmail }}:</p>
+<p><a href=\"{{ .ConfirmationURL }}\">Changer d'e-mail</a></p>
+"""

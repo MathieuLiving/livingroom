@@ -1,0 +1,106 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # --------------------------------------------------
+  # 1) FICHIERS SEO / PUBLICS À LAISSER PASSER
+  # --------------------------------------------------
+  RewriteRule ^robots\.txt$ - [L]
+  RewriteRule ^sitemap\.xml$ - [L]
+  RewriteRule ^sitemap-index\.xml$ - [L]
+  RewriteRule ^sitemap-pages\.xml$ - [L]
+  RewriteRule ^sitemap-cvd\.xml$ - [L]
+  RewriteRule ^sitemap-.*\.xml$ - [L]
+  RewriteRule ^favicon\.ico$ - [L]
+  RewriteRule ^favicon\.svg$ - [L]
+  RewriteRule ^manifest\.json$ - [L]
+
+  # --------------------------------------------------
+  # 2) EXCLURE LES EDGE FUNCTIONS / API
+  # --------------------------------------------------
+  RewriteRule ^functions/ - [L]
+
+  # --------------------------------------------------
+  # 3) FICHIERS / DOSSIERS EXISTANTS
+  # --------------------------------------------------
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # --------------------------------------------------
+  # 4) NORMALISATION HTTPS + WWW -> NON-WWW
+  # --------------------------------------------------
+  RewriteCond %{HTTPS} !=on [OR]
+  RewriteCond %{HTTP_HOST} ^www\.livingroom\.immo$ [NC]
+  RewriteRule ^ https://livingroom.immo%{REQUEST_URI} [R=301,L]
+
+  # --------------------------------------------------
+  # 5) REDIRECTIONS AUTH / CALLBACK
+  # --------------------------------------------------
+  RewriteRule ^auth/v1/verify$ /auth/callback [R=302,L,QSA]
+  RewriteRule ^auth/v1/.*$ /auth/callback [R=302,L,QSA]
+
+  # --------------------------------------------------
+  # 6) REDIRECTIONS SEO / LEGACY
+  # --------------------------------------------------
+
+  # Pages marketing supprimées
+  RewriteRule ^essayer-la-solution/?$ / [R=301,L]
+  RewriteRule ^demander-une-demo/?$ /pro-de-limmo [R=301,L]
+  RewriteRule ^porteur-projet/?$ /particuliers [R=301,L]
+
+  # Anciennes routes admin / dashboard
+  RewriteRule ^administration/?$ /admin-dashboard [R=301,L]
+  RewriteRule ^dashboard/?$ /admin-dashboard [R=301,L]
+  RewriteRule ^dashboard/(.*)$ /admin-dashboard [R=301,L]
+
+  # Anciennes routes agents par ville
+  RewriteRule ^agent-immobilier/paris/?$ /agent-immobilier-paris [R=301,L]
+  RewriteRule ^agent-immobilier/lyon/?$ /agent-immobilier-lyon [R=301,L]
+  RewriteRule ^agent-immobilier/bordeaux/?$ /agent-immobilier-bordeaux [R=301,L]
+  RewriteRule ^agent-immobilier/nice/?$ /agent-immobilier-nice [R=301,L]
+  RewriteRule ^agent-immobilier/lille/?$ /agent-immobilier-lille [R=301,L]
+  RewriteRule ^agent-immobilier/nantes/?$ /agent-immobilier-nantes [R=301,L]
+  RewriteRule ^agent-immobilier/rennes/?$ /agent-immobilier-rennes [R=301,L]
+  RewriteRule ^agent-immobilier/nancy/?$ /agent-immobilier-nancy [R=301,L]
+  RewriteRule ^agent-immobilier/metz/?$ /agent-immobilier-metz [R=301,L]
+
+  # Routes agrégées
+  RewriteRule ^agents-immobiliers/?$ /agents-immobiliers-par-ville [R=301,L]
+  RewriteRule ^acheter-immobilier/?$ /acheter-immobilier-paris [R=301,L]
+  RewriteRule ^vendre-immobilier/?$ /vendre-immobilier-paris [R=301,L]
+  RewriteRule ^articles/?$ /blog [R=301,L]
+
+  # Ancienne route auth
+  RewriteRule ^espace-professionnel/?$ /connexion [R=301,L]
+
+  # Ancienne route direct lead
+  RewriteRule ^preciser-projet/([^/]+)/?$ /direct-lead-form/$1 [R=301,L,QSA]
+
+  # Anciennes routes CVD vers sous-domaine card
+  RewriteRule ^cvd/([^/]+)/?$ https://card.livingroom.immo/cvd/$1 [R=301,L]
+  RewriteRule ^qr/([^/]+)/?$ https://card.livingroom.immo/qr/$1 [R=301,L]
+  RewriteRule ^livingroom/([^/]+)/?$ https://card.livingroom.immo/cvd/$1 [R=301,L]
+
+  # Ancienne route carte visite
+  RewriteRule ^carte-visite-digitale/([^/]+)/?$ / [R=301,L]
+
+  # --------------------------------------------------
+  # 7) FALLBACK SPA REACT
+  # --------------------------------------------------
+  RewriteRule ^index\.html$ - [L]
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# --------------------------------------------------
+# 8) SÉCURITÉ
+# --------------------------------------------------
+Options -Indexes
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; img-src 'self' data: blob: https://horizons-cdn.hostinger.com https://storage.googleapis.com https://*.supabase.co; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co wss://*.supabase.co; font-src 'self' data:; frame-ancestors 'self'; form-action 'self';"
+</IfModule>
